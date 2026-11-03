@@ -1,4 +1,4 @@
-export type QueryOptions = Readonly<Record<string, string>>;
+export type QueryOptions = Record<string, string>;
 
 export type ResponseCallback<T> = (data: T) => void;
 
@@ -7,12 +7,10 @@ interface RequestConfig {
     options?: QueryOptions;
 }
 
-type HttpMethod = 'GET';
-
 class Loader {
-    private readonly baseLink: string;
+    private baseLink: string;
 
-    private readonly options: QueryOptions;
+    private options: QueryOptions;
 
     public constructor(baseLink: string, options: QueryOptions) {
         this.baseLink = baseLink;
@@ -49,12 +47,7 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    private load<T>(
-        method: HttpMethod,
-        endpoint: string,
-        callback: ResponseCallback<T>,
-        options: QueryOptions = {}
-    ): void {
+    private load<T>(method: string, endpoint: string, callback: ResponseCallback<T>, options: QueryOptions = {}): void {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
             .then((res) => res.json())
